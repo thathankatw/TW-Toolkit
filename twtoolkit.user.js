@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         The West - Toolkit
-// @version      1.31
+// @version      1.32
 // @description  Useful tools for The West
 // @author       Thathanka Iyothanka
 // @include		http*://*.the-west.*/game.php*
@@ -17,7 +17,7 @@
 })(function() {
   TWToolkit = {
     scriptName: "The West Toolkit",
-    version: "1.31",
+    version: "1.32",
     gameMAX: Game.version.toString(),
     author: "Thathanka Iyothanka",
     gameMIN: "2.0",
@@ -279,7 +279,7 @@
       }
     },
     itemUse: {
-      itemList: [1975000, 1976000, 2675000, 2676000, 2561000, 2562000, 13711000, 2690000, 379000, 50382000, 50839000, 50855000, 51156000,51324000],
+      itemList: [1975000, 1976000, 2675000, 2676000, 2561000, 2562000, 13711000, 2690000, 379000, 50382000, 50839000, 50855000, 51156000,51324000,2136000,2393000,2137000,2394000,2138000,2395000,2139000],
       changeOpenCount: function(item, action) {
         var count = parseInt($('#open_popup_input').val());
         switch (action) {
@@ -347,6 +347,9 @@
             break;
           case 'ses':
             div = $('<div><img src="/images/icons/' + m.event + '.png" title="' + m.name.escapeHTML() + '" /> ' + m.amount * number + '</div>');
+            break;
+          case 'coupons':
+            div = $('<div><span class="tw-currency curr-bonds"></span> ' + m.coupons * number + '</div>');
             break;
           default:
             console.error(result);
