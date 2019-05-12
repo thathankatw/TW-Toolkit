@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         The West - Toolkit
-// @version      1.40
+// @version      1.41
 // @description  Useful tools for The West
 // @author       Thathanka Iyothanka
 // @include		http*://*.the-west.*/game.php*
@@ -17,7 +17,7 @@
 })(function() {
   TWToolkit = {
     scriptName: "The West Toolkit",
-    version: "1.40",
+    version: 1.41,
     gameMAX: Game.version.toString(),
     author: "Thathanka Iyothanka",
     gameMIN: "2.0",
@@ -26,7 +26,7 @@
     voteURL: "http://www.jeux-alternatifs.com/The-West-jeu55_hit-parade_1_1.html",
     setsURL: "https://west-tools.alwaysdata.net/script/files/sets.json",
     chartURL: "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js",
-    analyzerURL: "//west-tools.alwaysdata.net/script/analyzer.swf?2",
+    analyzerURL: "//west-tools.alwaysdata.net/script/analyzer.swf",
     langs: {
       base_url: "https://west-tools.alwaysdata.net/script/Languages/",
       fr_FR: "fr_FR.json",
@@ -77,7 +77,9 @@
         extra_players: '',
         remove_players: ''
       },
-      lang: null
+      lang: null,
+      fbanalyzer:true,
+      owned_forts:true
     },
     prepareInjection: function(string, pos, length, inject) {
       var str = string;
@@ -90,11 +92,16 @@
     init: function() {
       if (localStorage.getItem('TWToolkit_preferences')) {
         var storage = JSON.parse(localStorage.getItem('TWToolkit_preferences'));
+        for (var key in TWToolkit.preferences){
+          if (storage[key]===undefined){
+            storage[key]=TWToolkit.preferences[key];
+          }
+        }
         TWToolkit.preferences = storage;
       }
       TWToolkit.preferences.lang = (TWToolkit.preferences.lang == null) ? ((TWToolkit.langs[Game.locale]) ? Game.locale : "en_US") : TWToolkit.preferences.lang;
 
-      $.getJSON(TWToolkit.langs.base_url + TWToolkit.langs[TWToolkit.preferences.lang] + '?14', function(translation) {
+      $.getJSON(TWToolkit.langs.base_url + TWToolkit.langs[TWToolkit.preferences.lang] + '?'+(TWToolkit.version*100), function(translation) {
         TWToolkit.lang = translation;
         $.get(TWToolkit.updateURL, function(last_version) {
           if (parseFloat(last_version) > TWToolkit.version) {
@@ -140,7 +147,11 @@
           if (TWToolkit.preferences.critical_hits === true)
             TWToolkit.critHits.init();
 
-          TWToolkit.fbanalyzer.init();
+          if (TWToolkit.preferences.owned_forts === true)
+            TWToolkit.owned_forts.init();
+
+          if (TWToolkit.preferences.fbanalyzer === true)
+            TWToolkit.fbanalyzer.init();
 
         }).error(function() {
           TWToolkit.err();
@@ -200,7 +211,7 @@
       openWindow: function() {
         //Preferences tab
         var pref_tab = $('<div class="west-toolkit-preferences" style="padding:10px;"></div>');
-        var checkboxes = ['use_items', 'buy_items', 'fb_popup', 'critical_hits', 'fb_hits', 'fb_info', 'ids_popup', 'advent_calendar'];
+        var checkboxes = ['use_items', 'buy_items', 'fb_popup', 'critical_hits', 'fb_hits', 'fb_info', 'ids_popup', 'advent_calendar','fbanalyzer','owned_forts'];
         if (TWToolkit.preferences.lang == 'fr_FR') {
           checkboxes.push('vote');
         }
@@ -622,9 +633,9 @@
     },
     critHits: {
       init: function() {
-        document.styleSheets[0].insertRule('.cemetery .fancytable  .row_head .battle_cri span {background: url("' + TWToolkit.icons.crithits + '");height: 17px;width: 17px;}', document.styleSheets[0].cssRules.length);
-        document.styleSheets[0].insertRule('.cemetery .fancytable .battle_cri{width: 24px;}', document.styleSheets[0].cssRules.length);
-        document.styleSheets[0].insertRule(".cemetery #battle_stat.fancytable div.battle_tow {width: 71px !important;}", document.styleSheets[0].cssRules.length);
+        document.styleSheets[0].insertRule('.cemetery .fancytable  .row_head .battle_cri span {background: url("' + TWToolkit.icons.crithits + '");height: 17px;width: 17px;}');
+        document.styleSheets[0].insertRule('.cemetery .fancytable .battle_cri{width: 24px;}');
+        document.styleSheets[0].insertRule(".cemetery #battle_stat.fancytable div.battle_tow {width: 71px !important;}");
         var inject1 = TWToolkit.prepareInjection(CemeteryWindow.showStatInit.toString(), ['.appendToThCell("head","battle_nam"'], [0], [".addColumn('battle_cri',{sortBy:'crithits'}).appendToThCell('head','battle_cri',TWToolkit.lang.fbcemetery_head_cri,'&nbsp;')"]);
         var inject2 = TWToolkit.prepareInjection(CemeteryWindow.showStatUpdateTable.toString(), [";CemeteryWindow.table.buildRow('battlestat tw_red'", ";CemeteryWindow.table.buildRow('battlestat tw_blue'"], [0, 0], [";tmpCells['battle_cri']=rd.crithits", ";tmpCells['battle_cri']=rd.crithits"]);
         var inject3 = "var sortByObj={sortBy:null,orderBy:'ASC'};;var startSortDispatcher=function(ev){var sortBy='';sortBy=$(ev.target).closest('div.cell').data('sortBy');if(sortByObj.sortBy==sortBy){sortByObj.orderBy=sortByObj.orderBy=='asc'?'desc':'asc';CemeteryWindow.currentStats.reverse();}else{sortByObj.sortBy=sortBy;sortByObj.orderBy='asc';switch(sortBy){case'name':case'townname':CemeteryWindow.currentStats.sort(sortStrings(sortBy));break;case'ko_shots':CemeteryWindow.currentStats.sort(sortLength(sortBy));break;default:if($.isNumeric(CemeteryWindow.currentStats[0][sortBy])) CemeteryWindow.currentStats.sort(sortNumbers(sortBy));break;}}updatePlayerStatTable(CemeteryWindow.currentStats);};var sortLength=function(col) {return function(a,b) {return a[col].length-b[col].length;};};var sortNumbers=function(col) {return function(a,b) {return a[col]-b[col];};};var sortStrings=function(col) {return function(a,b) {return a[col].toUpperCase().replace(/^Ã„/,'A').replace(/^Ã–/,'O').replace(/^Ãœ/,'U').replace(/^Ã‰/,'E')>b[col].toUpperCase().replace(/^Ã„/,'A').replace(/^Ã–/,'O').replace(/^Ãœ/,'U').replace(/^Ã‰/,'E')?1:-1;};};CemeteryWindow.showStatInitData=function(battle_id,data){var callback=function(data){CemeteryWindow.showStatUpdateTable(data);sortByObj.sortBy=null};if(data){callback(data);}else{Ajax.remoteCallMode('fort_battleresultpage','get_battle',{battle_id:battle_id},function(data){if(data.error)return new UserMessage(data.msg).show();CemeteryWindow.currentStats=data.stats;callback(data.stats);},CemeteryWindow);}} ;var updatePlayerStatTable=function() {CemeteryWindow.table.clearBody();var tmpCells={};for(var i=0;i<CemeteryWindow.currentStats.length;i++) {var rd=CemeteryWindow.currentStats[i];tmpCells['battle_nam']=rd.name;tmpCells['battle_tow']=rd.townname;tmpCells['battle_shp']=rd.starthp;tmpCells['battle_ehp']=rd.finishedhp;tmpCells['battle_fla']=rd.flagholdcount;tmpCells['battle_hco']=rd.hitcount;tmpCells['battle_fco']=rd.misscount;tmpCells['battle_dco']=rd.totalcauseddamage;tmpCells['battle_ohi']=rd.takenhits;tmpCells['battle_ofa']=rd.dodgecount;tmpCells['battle_odm']=rd.takendamage;tmpCells['battle_avd']=rd.avg_damage;tmpCells['battle_okh']=rd.ko_shots.length;tmpCells['battle_onl']=rd.onlinecount;tmpCells['battle_cri'] = rd.crithits;CemeteryWindow.table.buildRow('battlestat '+(rd.battle_type=='defender'?'tw_blue':'tw_red'),tmpCells,addKoShotTitle(rd.ko_shots));}};var addKoShotTitle=function(koShots){return function(row){if(koShots.length){$('.battle_okh',row).attr('title',koShots.join(', '));} return row;}};";
@@ -768,7 +779,7 @@
     },
     reminders: {
       add: function(id, title, img, callback) {
-        document.styleSheets[0].insertRule('div.ongoing_entry div.image.' + id + ' {background: url("' + img + '") no-repeat;}', document.styleSheets[0].cssRules.length);
+        document.styleSheets[0].insertRule('div.ongoing_entry div.image.' + id + ' {background: url("' + img + '") no-repeat;}');
         var Reminder = new OnGoingPermanentEntry(function() {
           callback();
           WestUi.NotiBar.remove(Reminder);
@@ -1040,6 +1051,69 @@
             TWToolkit.fbanalyzer.addButton(fortId);
           }
         }
+      }
+    },
+    owned_forts: {
+      init: function() {
+        $(document).on('click', '.tow_profileheader img', function() {
+          var window = $(this).closest(".tw2gui_window");
+          var town_id = parseInt(/CityhallWindow\.open\((.*)?\); return false;/g.exec(window.find('.imagemap_cityhall').attr('onclick'))[1]);
+          var prop = {
+            true: "owned",
+            false: "members"
+          } [this === window.find('.tow_profileheader img[src*="fort_mini_icon"]').get(0)];
+          if (TWToolkit.owned_forts.data[town_id] && TWToolkit.owned_forts.data[town_id][prop].length !== 0) {
+            TWToolkit.owned_forts.open(town_id, prop);
+          }
+        });
+        document.styleSheets[0].insertRule(".west-toolkit-forts-container .fortname {width: 75%;}");
+        document.styleSheets[0].insertRule(".west-toolkit-forts-container .fortsize {width: 25%;text-align:center;}");
+        document.styleSheets[0].insertRule('.tow_profileheader img[src*="fort_mini_icon"] {cursor:pointer;}');
+        Ajax.get('map', 'get_minimap', {}, function(json) {
+          for (i in json.forts) {
+            for (j in json.forts[i]) {
+              var fort = json.forts[i][j];
+              var owner = fort.fort.town_id;
+              var members = fort.townIds ? fort.townIds : [];
+              var fort_data = {
+                type: fort.fort.type,
+                id: fort.fort.fort_id,
+                x: fort.fort.x,
+                y: fort.fort.y,
+                name: fort.fort.name
+              };
+              if (!TWToolkit.owned_forts.data[owner]) {
+                TWToolkit.owned_forts.data[owner] = {
+                  owned: [],
+                  members: []
+                };
+              }
+              TWToolkit.owned_forts.data[owner].owned.push(fort_data);
+              for (var k = 0; k < members.length; k++) {
+                if (!TWToolkit.owned_forts.data[members[k]]) {
+                  TWToolkit.owned_forts.data[members[k]] = {
+                    owned: [],
+                    members: []
+                  };
+                }
+                TWToolkit.owned_forts.data[members[k]].members.push(fort_data);
+              }
+            }
+          }
+        });
+      },
+      data: {},
+      open: function(townId, type) {
+        var forts_container = $('<div class="west-toolkit-forts-container" style="height:100%"></div>');
+        var table = new west.gui.Table();
+        table.addColumn('fortname').addColumn('fortsize').appendToCell('head', 'fortname', TWToolkit.lang.forts).appendToCell('head', 'fortsize', TWToolkit.lang.fort_size);
+        var forts = TWToolkit.owned_forts.data[townId][type];
+        for (var i = 0; i < forts.length; i++) {
+          table.appendRow();
+          table.appendToCell(i, "fortname", '<div class="anti_wrap"><a onclick="Map.center(' + forts[i].x + ', ' + forts[i].y + ')" href="#"><img class="fortOverviewIconScroll hasMousePopup" src="images/icons/center.png"></a> <a href="javascript:void(FortWindow.open(' + forts[i].id + ',' + forts[i].x + ',' + forts[i].y + '));" class="hasMousePopup"> ' + forts[i].name + '</a></div>').appendToCell(i, "fortsize", TWToolkit.lang.fort_sizes[forts[i].type]);
+        }
+        forts_container.html(table.getMainDiv());
+        wman.open('west-toolkit-analyzer', null, 'west-toolkit-analyzer noreload nocloseall nominimize dontminimize').setTitle(TWToolkit.lang.forts).setMiniTitle(TWToolkit.lang.forts).appendToContentPane(forts_container).setSize(340, 360);
       }
     }
   };
