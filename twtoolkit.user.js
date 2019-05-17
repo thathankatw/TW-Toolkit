@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         The West - Toolkit
-// @version      1.41
+// @version      1.42
 // @description  Useful tools for The West
 // @author       Thathanka Iyothanka
 // @include		http*://*.the-west.*/game.php*
@@ -33,7 +33,7 @@
 })(function() {
   TWToolkit = {
     scriptName: "The West Toolkit",
-    version: 1.41,
+    version: 1.42,
     gameMAX: Game.version.toString(),
     author: "Thathanka Iyothanka",
     gameMIN: "2.0",
@@ -56,11 +56,12 @@
       hu_HU: "hu_HU.json", // Thanks to Ördögh Vilmos
       hodor: "hodor.json", // Thanks to Wojcieszy
       ru_RU: "ru_RU.json", // Thanks to Anton
-      cs_CZ: "cs_CZ.json", // Thanks to Jamza
+      cs_CZ: "cs_CZ.json", // Thanks to JamzaSK
       bg_BG: "bg_BG.json", // Thanks to Wolverstone George
       el_GR: "el_GR.json", // Thanks to Μάταιος Φρουρός
       sv_SE: "sv_SE.json", // Thanks to Melkor
-      sk_SK: "sk_SK.json" // Thanks to JamzaSK
+      sk_SK: "sk_SK.json", // Thanks to JamzaSK
+      tr_TR: "tr_TR.json"  // Thanks to JohnCooper
     },
     icons: {
       crithits: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAIAAAC0D9CtAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAAGYktHRAD/AP8A/6C9p5MAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQffCh0RLy9jVl/KAAAC7ElEQVQozwXBS28bVRQA4HPOvTNjZ2J7Ysd2TAiVUgJIpUgs2PGQKsECkLqqBOwRYoOExBqx4Sd03wVbJGDBouLVB0IFIR4VRk2kJm2dKMXJeBx7Hnfuvefwffj5J+/PluVJ7q1IqLTWASECirD1zrKzwoJEIsgUNanut5s6PSunSxPHKzuD9kozsrUTX7OvxFkRYUfsWczCOd5P/f25Lde7+vCsHvWSt994ebO3muezslriPMXZGfoWkOSclwGjjcjz9szc2iunudWOobc+6LYaWlnNZvT3Qe/WP/HjKQIQY95tH10cHT7b5NB2LPQSNc0LrYjEO1MsgrIafP3b4PvfqaFAhzWpvBO3jqfPHM47j57897V+DRZViMoQgJjqrDKLtZ/Gg+u/UiuGqMlFXr/1pu0m5fQY4nA4nuz8kgIFiJ5ASIFHrlazqn/9D0hiJuRlWT69g+9dUZM9sFWenfJKMBwfbCwDrVihEDgLAL17J0FdEiqwtdGsPv6oXi7L/aNld92IK7JUAQz3M1JECMTMgAJ7B6AARKQw9p0r9Pql8Px2fOMH/OKab3cgP6vms2aWkkJEIAQUliwJAQBEfKvpDh4sPvyAv/m2deEifvdj8PABhBGbqrRGGEFAMyBYszjXhjsImgLC5PadfHdMz13Ib97WV68GUegIAy/Z1qZ3LIIkiLZIs7g6PdcDY1iAVuPG8y/arSfMZ5+quuJGMyhNnSRHT3WsYxYhraQqbemq/Ve3ihVSlYHaysbQf/kV/fkXthNVlE7r3csvzdCIBwYgBPIsUrtZx9+9/EI26oCHMD1p3rzR0FoXi3ytfffdV8Zd56raemERHUQrWfrfJK1F8WnkJ5c2+5N+/3ih16KC3XJ78+FmPMPaF35ZqsnjmWWt2wHfN/TzXtFPwzDUSCigeNiWUSKWnan8bq6VRh2dpvMst+tJpHudZr0xeJSW9yZzZq+IQFCQFYIwi/eePZJCpRuNaKPXHnbj/wFmv8HUZD0ATQAAAABJRU5ErkJggg==",
@@ -237,7 +238,7 @@
             TWToolkit.savePreferences();
           }).getMainDiv().css('margin', '2px')).append('<br/>');
         }
-        pref_tab.append(TWToolkit.lang.script_lang).append(new west.gui.Combobox().addItem('en_US', 'English').addItem('fr_FR', 'Français').addItem('de_DE', 'Deutsch').addItem('pt_PT', 'Português').addItem('pl_PL', 'Polski').addItem('it_IT', 'Italiano').addItem('es_ES', 'Español').addItem('hu_HU', 'Magyar').addItem('ru_RU', 'русский').addItem('cs_CZ', 'čeština').addItem('bg_BG', 'български').addItem('el_GR', 'Ελληνικά').addItem('sv_SE', 'Svenska').addItem('sk_SK', 'Slovenčina').addItem('hodor', 'Hodor').select(TWToolkit.preferences.lang).addListener(function(val) {
+        pref_tab.append(TWToolkit.lang.script_lang).append(new west.gui.Combobox().addItem('en_US', 'English').addItem('fr_FR', 'Français').addItem('de_DE', 'Deutsch').addItem('pt_PT', 'Português').addItem('pl_PL', 'Polski').addItem('it_IT', 'Italiano').addItem('es_ES', 'Español').addItem('hu_HU', 'Magyar').addItem('ru_RU', 'русский').addItem('cs_CZ', 'čeština').addItem('bg_BG', 'български').addItem('el_GR', 'Ελληνικά').addItem('sv_SE', 'Svenska').addItem('sk_SK', 'Slovenčina').addItem('tr_TR','Türkçe').select(TWToolkit.preferences.lang).addListener(function(val) {
           TWToolkit.preferences.lang = val;
           TWToolkit.savePreferences();
         }).getMainDiv()).append('<br/><br/>').append(new west.gui.Button(TWToolkit.lang.pref_apply).click(function() {
@@ -805,7 +806,7 @@
       },
       initVote: function() {
         if (!TWToolkit.preferences.vote_time || ((new Date(Game.getServerTime() * 1000) > new Date(TWToolkit.preferences.vote_time * 1000)) && (new Date(Game.getServerTime() * 1000).getDay() !== new Date(TWToolkit.preferences.vote_time * 1000).getDay()))) {
-          TWToolkit.reminders.add('vote', TWToolkit.lang.vote, TWToolkit.icons.vote_reminder, function() {
+          TWToolkit.reminders.add('vote', TWToolkit.lang.prefs.vote, TWToolkit.icons.vote_reminder, function() {
             showlink(TWToolkit.voteURL);
             TWToolkit.preferences.vote_time = Game.getServerTime();
           });
