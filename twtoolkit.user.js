@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         The West - Toolkit
-// @version      1.43
+// @version      1.44
 // @description  Useful tools for The West
 // @author       Thathanka Iyothanka
 // @include		http*://*.the-west.*/game.php*
@@ -33,7 +33,7 @@
 })(function() {
   TWToolkit = {
     scriptName: "The West Toolkit",
-    version: 1.43,
+    version: 1.44,
     gameMAX: Game.version.toString(),
     author: "Thathanka Iyothanka",
     gameMIN: "2.0",
@@ -230,23 +230,25 @@
       },
       openWindow: function() {
         //Preferences tab
-        var pref_tab = $('<div class="west-toolkit-preferences" style="padding:10px;"></div>');
+        var pref_content = $('<div style="padding:10px;"></div>');
         var checkboxes = ['use_items', 'buy_items', 'fb_popup', 'critical_hits', 'fb_hits', 'fb_info', 'ids_popup', 'advent_calendar', 'fbanalyzer','fbanalyzerHtml5','owned_forts'];
         if (TWToolkit.preferences.lang == 'fr_FR') {
           checkboxes.push('vote');
         }
+        pref_content.append(new west.gui.Button(TWToolkit.lang.pref_apply).click(function() {
+          location.reload();
+        }).getMainDiv()).append('<a href="https://www.buymeacoffee.com/thathanka" target="_blank"><img src="https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/purple_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>').append('<br/><br/>');
         for (i = 0; i < checkboxes.length; i++) {
-          pref_tab.append(new west.gui.Checkbox(TWToolkit.lang.prefs[checkboxes[i]], checkboxes[i]).setId(checkboxes[i]).setSelected(TWToolkit.preferences[checkboxes[i]]).setCallback(function(val) {
+          pref_content.append(new west.gui.Checkbox(TWToolkit.lang.prefs[checkboxes[i]], checkboxes[i]).setId(checkboxes[i]).setSelected(TWToolkit.preferences[checkboxes[i]]).setCallback(function(val) {
             TWToolkit.preferences[this.groupClass] = val;
             TWToolkit.savePreferences();
           }).getMainDiv().css('margin', '2px')).append('<br/>');
         }
-        pref_tab.append(TWToolkit.lang.script_lang).append(new west.gui.Combobox().addItem('en_US', 'English').addItem('fr_FR', 'Français').addItem('de_DE', 'Deutsch').addItem('pt_PT', 'Português').addItem('pl_PL', 'Polski').addItem('it_IT', 'Italiano').addItem('es_ES', 'Español').addItem('hu_HU', 'Magyar').addItem('ru_RU', 'русский').addItem('cs_CZ', 'čeština').addItem('bg_BG', 'български').addItem('el_GR', 'Ελληνικά').addItem('sv_SE', 'Svenska').addItem('sk_SK', 'Slovenčina').addItem('tr_TR', 'Türkçe').select(TWToolkit.preferences.lang).addListener(function(val) {
+        pref_content.append(TWToolkit.lang.script_lang).append(new west.gui.Combobox().addItem('en_US', 'English').addItem('fr_FR', 'Français').addItem('de_DE', 'Deutsch').addItem('pt_PT', 'Português').addItem('pl_PL', 'Polski').addItem('it_IT', 'Italiano').addItem('es_ES', 'Español').addItem('hu_HU', 'Magyar').addItem('ru_RU', 'русский').addItem('cs_CZ', 'čeština').addItem('bg_BG', 'български').addItem('el_GR', 'Ελληνικά').addItem('sv_SE', 'Svenska').addItem('sk_SK', 'Slovenčina').addItem('tr_TR', 'Türkçe').select(TWToolkit.preferences.lang).addListener(function(val) {
           TWToolkit.preferences.lang = val;
           TWToolkit.savePreferences();
-        }).getMainDiv()).append('<br/><br/>').append(new west.gui.Button(TWToolkit.lang.pref_apply).click(function() {
-          location.reload();
         }).getMainDiv());
+        var pref_tab = $(new west.gui.Scrollpane().appendContent(pref_content).addClass('west-toolkit-preferences').getMainDiv()).css('margin-top', '6px');
         //Group telegrams tab
         var grouptelegrams_content = $('<div style="padding:10px;"></div>');
         var inputs = ['allys', 'towns', 'extra_players', 'remove_players'];
@@ -1383,7 +1385,7 @@
       handlePlayerInfo: function(fortId) {
         var info = TWToolkit.fbanalyzerHtml5.fbs[fortId].ctx;
         var charclasses = {
-          '255': 'greenhorn',
+          '-1':'greenhorn',
           '0': 'adventurer',
           '1': 'duelist',
           '2': 'worker',
