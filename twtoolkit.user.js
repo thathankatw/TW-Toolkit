@@ -740,7 +740,7 @@
         };
         FortBattle.getCharDataSheetOrigin = FortBattle.getCharDataSheet;
         FortBattle.getCharDataSheet = function(data) {
-          return FortBattle.getCharDataSheetOrigin(data) + '<img src="' + TWToolkit.icons.totaldmg + '" title="' + TWToolkit.lang.fbinfo_totaldmg + '" /> %totalDmg%<br/>';
+          return FortBattle.getCharDataSheetOrigin(data) + '<div><img src="' + TWToolkit.icons.totaldmg + '" title="' + TWToolkit.lang.fbinfo_totaldmg + '" /> %totalDmg%</div>';
         };
       },
       initFbHits: function() {
@@ -1174,7 +1174,6 @@
         if (ctx.charIcons[ctx.highlightPlayer.characterid]) {
           ctx.charIcons[ctx.highlightPlayer.characterid].addClass('highlight');
         }
-        FortBattle.flashShowCharacterInfo(fortId, ctx.highlightPlayer.westPlayerId, ctx.highlightPlayer.health, ctx.highlightPlayer.healthmax, ctx.highlightPlayer.causeddamage, ctx.highlightPlayer.shotdmg, ctx.highlightPlayer.shotat, JSON.stringify(ctx.highlightPlayer.bonusinfo));
       },
       showClass: function(fortId, team, cl) {
         var ctx = TWToolkit.fbanalyzerHtml5.fbs[fortId].ctx;
