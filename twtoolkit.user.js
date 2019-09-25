@@ -94,7 +94,6 @@
         remove_players: ''
       },
       lang: null,
-      fbanalyzer: true,
       fbanalyzerHtml5: true,
       owned_forts: true
     },
@@ -167,10 +166,7 @@
           if (TWToolkit.preferences.owned_forts === true)
             TWToolkit.owned_forts.init();
 
-          if (TWToolkit.preferences.fbanalyzer === true)
-            TWToolkit.fbanalyzer.init();
-
-            if (TWToolkit.preferences.fbanalyzerHtml5 === true)
+          if (TWToolkit.preferences.fbanalyzerHtml5 === true)
               TWToolkit.fbanalyzerHtml5.init();
 
         }).error(function() {
@@ -231,7 +227,7 @@
       openWindow: function() {
         //Preferences tab
         var pref_content = $('<div style="padding:10px;"></div>');
-        var checkboxes = ['use_items', 'buy_items', 'fb_popup', 'critical_hits', 'fb_hits', 'fb_info', 'ids_popup', 'advent_calendar', 'fbanalyzer','fbanalyzerHtml5','owned_forts'];
+        var checkboxes = ['use_items', 'buy_items', 'fb_popup', 'critical_hits', 'fb_hits', 'fb_info', 'ids_popup', 'advent_calendar','fbanalyzerHtml5','owned_forts'];
         if (TWToolkit.preferences.lang == 'fr_FR') {
           checkboxes.push('vote');
         }
@@ -480,7 +476,6 @@
       init: function() {
         Trader.buyDialogOrigin = Trader.buyDialog;
         Trader.buyDialog = function(item_id) {
-          var buy_popup;
           if ($('#buy_popup')) {
             $('#buy_popup').remove();
           }
@@ -739,10 +734,9 @@
       stats: {},
       initFbInfo: function() {
         FortBattle.flashShowCharacterInfoOrigin = FortBattle.flashShowCharacterInfo;
-        FortBattle.flashShowCharacterInfo = function(fortId, playerId, healthNow, healthMax, totalDmg, lastDmg, shotat, bonusdata, resp) {
-          TWToolkit.FortBattleInfo.fortId = fortId;
-          FortBattle.flashShowCharacterInfoOrigin(fortId, playerId, healthNow, healthMax, totalDmg, lastDmg, shotat, bonusdata);
-          $('div.recruitlist_name', '#fort_battle_' + fortId + '_infoarea').html('<span onclick="PlayerProfileWindow.open(' + playerId + ');" style="cursor:pointer;">' + $('div.recruitlist_name').text() + '</span>');
+        FortBattle.flashShowCharacterInfo = function(...args) {
+          FortBattle.flashShowCharacterInfoOrigin(...args);
+          $('div.recruitlist_name', '#fort_battle_' + args[0] + '_infoarea').html('<span onclick="PlayerProfileWindow.open(' + args[1] + ');" style="cursor:pointer;">' + $('div.recruitlist_name').text() + '</span>');
         };
         FortBattle.getCharDataSheetOrigin = FortBattle.getCharDataSheet;
         FortBattle.getCharDataSheet = function(data) {
@@ -892,188 +886,6 @@
             $('div#west-toolkit-bestequip-res').append('<br/><br/><br/><br/><br/>' + TWToolkit.lang.bestequip_val + json.val);
           }
         });
-      }
-    },
-    fbanalyzer: {
-      fbs: {},
-      open: function(fortId) {
-        var banner_flash = $('<div class="west-toolkit-analyzer-stats west-toolkit-analyzer-graph west-toolkit-analyzer-connect" style="margin-top:-10px;"><embed style="position:absolute;z-index:-1;" src="' + TWToolkit.analyzerURL + '" wmode="transparent" width="550" height="300" id="fbanalyzer_flash" allowscriptaccess="always" FlashVars="fortId=' + fortId + '" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" allownetworking="all"></div>');
-        var tab_connect = $('<div class="west-toolkit-analyzer-connect" id="connection-log" style="padding:20px;"></div>');
-        var tab_stats = $('<div class="west-toolkit-analyzer-stats" id="stats" style="padding-top:10px;height:320px;"></div>');
-        var tab_graph = $('<div class="west-toolkit-analyzer-graph" style="padding-top:40px;"><canvas id="graph"></canvas></div>');
-        TWToolkit.fbanalyzer.fbs[fortId] = {
-          graph: {}
-        };
-        TWToolkit.fbanalyzer.fbs[fortId].graph.config = {
-          type: 'line',
-          data: {
-            labels: [],
-            datasets: [{
-              label: TWToolkit.lang.attackers,
-              backgroundColor: '#c00',
-              borderColor: '#c00',
-              data: [],
-              fill: false
-            }, {
-              label: TWToolkit.lang.defenders,
-              fill: false,
-              backgroundColor: '#07d',
-              borderColor: '#07d',
-              data: []
-            }]
-          },
-          options: {
-            legend: {
-              display: false
-            },
-            responsive: true,
-            scales: {
-              xAxes: [{
-                display: true,
-                scaleLabel: {
-                  display: true,
-                  labelString: TWToolkit.lang.round
-                }
-              }],
-              yAxes: [{
-                display: true,
-                scaleLabel: {
-                  display: true,
-                  labelString: CharacterSkills.skills.health.name
-                }
-              }]
-            }
-          }
-        };
-        TWToolkit.fbanalyzer.fbs[fortId].window = wman.open('west-toolkit-analyzer', null, 'west-toolkit-analyzer noreload nocloseall nominimize dontminimize').setMiniTitle('TWToolkit').addTab(TWToolkit.lang.connection, 'connect', TWToolkit.ui.tabclick).addTab(TWToolkit.lang.stats, 'stats', TWToolkit.ui.tabclick).addTab(TWToolkit.lang.graph, 'graph', TWToolkit.ui.tabclick).appendToContentPane(banner_flash, tab_connect, tab_stats, tab_graph).setSize(600, 395);
-        var ctx = $(TWToolkit.fbanalyzer.fbs[fortId].window.divMain).find('canvas#graph').get(0).getContext('2d');
-        TWToolkit.fbanalyzer.fbs[fortId].graph.chart = new Chart(ctx, TWToolkit.fbanalyzer.fbs[fortId].graph.config);
-        TWToolkit.ui.showTab(TWToolkit.fbanalyzer.fbs[fortId].window, 'connect');
-      },
-      flashReady: function(fortId) {
-        TWToolkit.fbanalyzer.addConnectionInfo(fortId, TWToolkit.lang.ready, 'info');
-        if (!FortBattle.flashData['info' + fortId]) {
-          TWToolkit.fbanalyzer.addConnectionInfo(fortId, TWToolkit.lang.fbclosed, "error");
-        } else {
-          var data = FortBattle.flashData['info' + fortId];
-          $(TWToolkit.fbanalyzer.fbs[fortId].window.divMain).find('#fbanalyzer_flash').get(0).start(data.host, data.serverport, data.policyport);
-          TWToolkit.fbanalyzer.addConnectionInfo(fortId, TWToolkit.lang.connecting, 'info');
-        }
-      },
-      connected: function(fortId) {
-        TWToolkit.fbanalyzer.addConnectionInfo(fortId, TWToolkit.lang.connected, 'success');
-      },
-      onclose: function(fortId) {
-        TWToolkit.fbanalyzer.addConnectionInfo(fortId, TWToolkit.lang.connection_closed, "info");
-      },
-      onover: function(fortId) {
-        TWToolkit.fbanalyzer.addConnectionInfo(fortId, TWToolkit.lang.fbover, "success");
-      },
-      addConnectionInfo: function(fortId, msg, type) {
-        $(TWToolkit.fbanalyzer.fbs[fortId].window.divMain).find('#connection-log').append('<div class="mini_system_icon_' + type + '"></div> ' + msg + '<br/>');
-      },
-      addRoundInfo: function(fortId, json) {
-        var data = JSON.parse(json);
-        if (TWToolkit.fbanalyzer.fbs[fortId]) {
-          if (!TWToolkit.fbanalyzer.fbs[fortId].data) {
-            TWToolkit.fbanalyzer.fbs[fortId].data = [];
-          }
-          TWToolkit.fbanalyzer.fbs[fortId].data[data.round] = data;
-          TWToolkit.fbanalyzer.updateStats(fortId, data.round);
-          TWToolkit.fbanalyzer.updateGraph(fortId, data.round);
-        }
-      },
-      updateStats: function(fortId, round) {
-        var container = $(TWToolkit.fbanalyzer.fbs[fortId].window.divMain).find('#stats');
-
-        var round_html = '<div class="round" style="text-align:center;"><strong>' + TWToolkit.lang.round + ' ' + round + '</strong><br>';
-        if (TWToolkit.fbanalyzer.fbs[fortId].data[round - 1]) {
-          round_html += '<small><span style="color:grey;margin-right: 5px;">(' + format_number(TWToolkit.fbanalyzer.fbs[fortId].data[round].attack.hp - TWToolkit.fbanalyzer.fbs[fortId].data[round - 1].attack.hp) + ')</span></small>';
-        }
-        round_html += '<span style="color:#c00;font-weight:bold;">' + format_number(TWToolkit.fbanalyzer.fbs[fortId].data[round].attack.hp) + '</span> - ' + CharacterSkills.skills.health.name + ' - <span style="color:#07d;font-weight:bold;">' + format_number(TWToolkit.fbanalyzer.fbs[fortId].data[round].defense.hp) + '</span>';
-        if (TWToolkit.fbanalyzer.fbs[fortId].data[round - 1]) {
-          round_html += '<small><span style="color:grey;margin-left: 5px;">(' + format_number(TWToolkit.fbanalyzer.fbs[fortId].data[round].defense.hp - TWToolkit.fbanalyzer.fbs[fortId].data[round - 1].defense.hp) + ')</span></small>';
-        }
-        round_html += '<br>';
-        if (TWToolkit.fbanalyzer.fbs[fortId].data[round - 1]) {
-          round_html += '<small><span style="color:grey;margin-right: 5px;">(' + format_number(TWToolkit.fbanalyzer.fbs[fortId].data[round].attack.nb - TWToolkit.fbanalyzer.fbs[fortId].data[round - 1].attack.nb) + ')</span></small>';
-        }
-        round_html += '<span style="color:#c00;font-weight:bold;">' + format_number(TWToolkit.fbanalyzer.fbs[fortId].data[round].attack.nb) + '</span> - ' + TWToolkit.lang.nbplayers + ' - <span style="color:#07d;font-weight:bold;">' + format_number(TWToolkit.fbanalyzer.fbs[fortId].data[round].defense.nb) + '</span>';
-        if (TWToolkit.fbanalyzer.fbs[fortId].data[round - 1]) {
-          round_html += '<small><span style="color:grey;margin-left: 5px;">(' + format_number(TWToolkit.fbanalyzer.fbs[fortId].data[round].defense.nb - TWToolkit.fbanalyzer.fbs[fortId].data[round - 1].defense.nb) + ')</span></small>';
-        }
-        container.html(round_html);
-        var table = new west.gui.Table();
-        table.addColumn('hp-val').addColumn('hp').addColumn('losthp-val').addColumn('losthp').addColumn('dmg-val').addColumn('dmg').appendToCell('head', 'hp', CharacterSkills.skills.health.name).appendToCell('head', 'losthp', TWToolkit.lang.losthp).appendToCell('head', 'dmg', TWToolkit.lang.fbinfo_lastdmg);
-
-        function sortByKey(array, key) {
-          return array.sort(function(a, b) {
-            var x = a[key];
-            var y = b[key];
-            return ((x < y) ? 1 : ((x > y) ? -1 : 0));
-          });
-        }
-        var hp = $.extend(true, [], sortByKey(TWToolkit.fbanalyzer.fbs[fortId].data[round].players, "health"));
-        var losthp = $.extend(true, [], sortByKey(TWToolkit.fbanalyzer.fbs[fortId].data[round].players, "damagetaken"));
-        var dmg = sortByKey(TWToolkit.fbanalyzer.fbs[fortId].data[round].players, "shotdmg");
-        for (var i = 0; i < hp.length; i++) {
-          table.appendRow();
-          table.appendToCell(i, "hp-val", format_number(hp[i].health)).appendToCell(i, "hp", TWToolkit.fbanalyzer.getPlayerHTML(fortId, hp[i])).appendToCell(i, "losthp-val", format_number(losthp[i].damagetaken)).appendToCell(i, "losthp", (losthp[i].health === 0 ? '<div class="mini_system_icon_error" title="KO"></div>' : (losthp[i].damagetaken > losthp[i].health ? '<div class="mini_system_icon_warning" title="' + TWToolkit.lang.hpwarning + '"></div>' : "")) + TWToolkit.fbanalyzer.getPlayerHTML(fortId, losthp[i])).appendToCell(i, "dmg-val", (dmg[i].shotdmg === 65535 ? 'KO' : format_number(dmg[i].shotdmg))).appendToCell(i, "dmg", TWToolkit.fbanalyzer.getPlayerHTML(fortId, dmg[i]));
-        }
-        container.html(new west.gui.Scrollpane().appendContent(round_html).appendContent(table.getMainDiv()).getMainDiv());
-        if (TWToolkit.fbanalyzer.fbs[fortId].window.currentActiveTabId == "connect") {
-          TWToolkit.ui.showTab(TWToolkit.fbanalyzer.fbs[fortId].window, 'stats');
-        }
-      },
-      updateGraph: function(fortId, round) {
-        TWToolkit.fbanalyzer.fbs[fortId].graph.config.data.labels.push(round);
-        TWToolkit.fbanalyzer.fbs[fortId].graph.config.data.datasets[0].data.push(TWToolkit.fbanalyzer.fbs[fortId].data[round].attack.hp);
-        TWToolkit.fbanalyzer.fbs[fortId].graph.config.data.datasets[1].data.push(TWToolkit.fbanalyzer.fbs[fortId].data[round].defense.hp);
-        TWToolkit.fbanalyzer.fbs[fortId].graph.chart.update();
-      },
-      getPlayerHTML: function(fortId, player) {
-        var charclasses = {
-          '255': 'greenhorn',
-          '0': 'adventurer',
-          '1': 'duelist',
-          '2': 'worker',
-          '3': 'soldier'
-        };
-        return Chat.Formatter.getClassImage(charclasses[player.class]) + ' <span style="color:' + (player.team == 0 ? "#07d" : "#c00") + ';font-weight:bold;cursor: pointer;" onmouseleave="TWToolkit.fbanalyzer.hidePosition(' + fortId + ')" onmouseenter="TWToolkit.fbanalyzer.showPosition(' + fortId + ',' + player.position + ');" onclick="PlayerProfileWindow.open(' + player.id + ');">' + player.name + '</span>';
-      },
-      showPosition: function(fortId, pos) {
-        var selec = (FortBattle.flashData['info' + fortId].maneuver === true ? 'm' + fortId : fortId);
-        var top = 29 + 15 * Math.floor(pos / 34);
-        var left = -8 + 15 * (pos % 34);
-        $('.fortbattle-' + selec + ' div.tw2gui_window_content_pane').append('<img id="toolkit-marker" style="position: absolute; top: ' + top + 'px; left: ' + left + 'px; pointer-events: none;" src="images/fort/battle/marker.png"/>');
-
-      },
-      hidePosition: function(fortId) {
-        var selec = (FortBattle.flashData['info' + fortId].maneuver === true ? 'm' + fortId : fortId);
-        $('.fortbattle-' + selec + ' div.tw2gui_window_content_pane #toolkit-marker').remove();
-      },
-      addButton: function(fortId) {
-        $('.fortbattle-' + fortId + ' .tw2gui_window_content_pane').append('<div class="fort_battle_button_analyzer" onclick="TWToolkit.fbanalyzer.open(' + fortId + ')" title="' + TWToolkit.lang.openanalyzer + '" style="cursor: pointer; position: absolute; background-image: url(' + TWToolkit.icons.analyzer_button + '); width: 25px; height: 25px;top: 10px;left: 475px;"></div>');
-      },
-      init: function() {
-        document.styleSheets[0].insertRule(".west-toolkit-analyzer .hp, .dmg, .losthp {width: 25%;}");
-        document.styleSheets[0].insertRule(".west-toolkit-analyzer .hp-val, .dmg-val, .losthp-val {width: 8%;text-align:center;}");
-        document.styleSheets[0].insertRule("div.mini_system_icon_warning, div.mini_system_icon_info, div.mini_system_icon_error,div.mini_system_icon_success {width:15px;height:15px;display:inline-block;background-image:url(https://westfr.innogamescdn.com/images/tw2gui/systemicons.png);background-size: 60px;position:relative;top:3px;}");
-        document.styleSheets[0].insertRule("div.mini_system_icon_info {background-position-x:-45px;}");
-        document.styleSheets[0].insertRule("div.mini_system_icon_success {background-position-x:-30px;}");
-        document.styleSheets[0].insertRule("div.mini_system_icon_error {background-position-x:-15px;}");
-        document.styleSheets[0].insertRule("div.fort_battle_button_analyzer:hover {background-position-y:25px;}");
-        if (typeof Chart ==="undefined"){
-          $.getScript(TWToolkit.chartURL);
-        }
-        FortBattle.flashIsReadyOrigin = FortBattle.flashIsReady;
-        FortBattle.flashIsReady = function(fortId) {
-          FortBattle.flashIsReadyOrigin(fortId);
-          var info = FortBattle.flashData['info' + fortId];
-          if (!info.maneuver) {
-            TWToolkit.fbanalyzer.addButton(fortId);
-          }
-        }
       }
     },
     fbanalyzerHtml5: {
@@ -1247,10 +1059,9 @@
       },
       searchPlayers: function(fortId, input) {
         var players = TWToolkit.fbanalyzerHtml5.fbs[fortId].data.players;
-        var char_ids
         var search = input.toLowerCase();
         if (search === "") {
-          return []
+          return [];
         } else {
           var match = [];
           for (var charId in players) {
@@ -1274,7 +1085,6 @@
       },
       showSearchResults: function(fortId, players) {
         var search_results = TWToolkit.fbanalyzerHtml5.fbs[fortId].search_results;
-        var characters = TWToolkit.fbanalyzerHtml5.fbs[fortId].characters;
         search_results.clearBody();
         if (players.length > 0) {
           search_results.$("div.no-content").hide();
@@ -1310,7 +1120,7 @@
             var html = "";
             var classes = TWToolkit.fbanalyzerHtml5.fbs[fortId].data[team].classes;
             for (var cl in classes) {
-              html += `<span style="cursor:pointer;margin-left:2px;margin-right:2px;" onmouseenter="TWToolkit.fbanalyzerHtml5.showClass(` + fortId + `,'` + team + `','` + cl + `')" onmouseleave="TWToolkit.fbanalyzerHtml5.hidePosition(` + fortId + ');">' + classes[cl] + ' ' + Chat.Formatter.getClassImage(cl) + '</span>';
+              html += `<figure style="display:inline-block;cursor:pointer;margin-left:2px;margin-right:2px;" onmouseenter="TWToolkit.fbanalyzerHtml5.showClass(` + fortId + `,'` + team + `','` + cl + `')" onmouseleave="TWToolkit.fbanalyzerHtml5.hidePosition(` + fortId + ');">' + Chat.Formatter.getClassImage(cl) + '<figcaption>' + classes[cl] + '</figcaption></figure>';
             }
             return html;
           }
@@ -1319,7 +1129,7 @@
           round_html += '<br>';
           round_html += getEvol("attack", "nb") + getVal("attack", "nb") + ' - ' + TWToolkit.lang.nbplayers + ' - ' + getVal("defense", "nb") + getEvol("defense", "nb");
           round_html += '<br>';
-          round_html += getClasses("attack") + ' - ' + TWToolkit.lang.classes + ' - ' + getClasses("defense");
+          round_html += '<div style="vertical-align:middle;">' + getClasses("attack") + ' - ' + getClasses("defense") + '</div>';
           container.html(round_html);
           var table = new west.gui.Table();
           table.addColumn('hp-val').addColumn('hp').addColumn('losthp-val').addColumn('losthp').addColumn('dmg-val').addColumn('dmg').appendToCell('head', 'hp', CharacterSkills.skills.health.name).appendToCell('head', 'losthp', TWToolkit.lang.losthp).appendToCell('head', 'dmg', TWToolkit.lang.fbinfo_lastdmg);
