@@ -2,7 +2,7 @@
 
 ## Install URL
 
-[Click here to install](https://the-west-scripts.github.io/TW-Best-Friends/script.user.js)
+[Click here to install]()
 
 ## Features
 
