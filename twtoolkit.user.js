@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         The West - Toolkit
-// @version      1.46
+// @version      1.47
 // @description  Useful tools for The West
 // @author       Thathanka Iyothanka
 // @include		http*://*.the-west.*/game.php*
@@ -8,6 +8,10 @@
 // @license         GPLv3 - http://www.gnu.org/licenses/gpl-3.0.txt
 // @copyright       Copyright (C) 2015, by Thathanka Iyothanka <thathanka.tw@gmail.com>
 // @grant        none
+// @homepage https://the-west-scripts.github.io/TW-Toolkit/
+// @downloadURL https://the-west-scripts.github.io/TW-Toolkit/twtoolkit.user.js
+// @updateURL https://the-west-scripts.github.io/TW-Toolkit/twtoolkit.user.js
+// @supportURL https://github.com/The-West-Scripts/TW-Toolkit/issues
 // @namespace https://greasyfork.org/users/13941
 // ==/UserScript==
 /*
@@ -33,16 +37,15 @@
 })(function() {
   TWToolkit = {
     scriptName: "The West Toolkit",
-    version: 1.46,
+    version: 1.47,
     gameMAX: Game.version.toString(),
     author: "Thathanka Iyothanka",
     gameMIN: "2.0",
-    website: "https://greasyfork.org/scripts/13506/",
+    website: "https://the-west-scripts.github.io/TW-Toolkit",
     updateURL: "https://west-tools.alwaysdata.net/script/files/last_version.txt",
     voteURL: "http://www.jeux-alternatifs.com/The-West-jeu55_hit-parade_1_1.html",
     setsURL: "https://west-tools.alwaysdata.net/script/files/sets.json",
     chartURL: "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js",
-    analyzerURL: "//west-tools.alwaysdata.net/script/analyzer.swf",
     langs: {
       base_url: "https://west-tools.alwaysdata.net/script/Languages/",
       fr_FR: "fr_FR.json",
@@ -123,7 +126,7 @@
           if (parseFloat(last_version) > TWToolkit.version) {
             var updatedialog = new west.gui.Dialog('TWToolkit', TWToolkit.lang.updateAvailable + ' (v' + last_version + ')', west.gui.Dialog.SYS_WARNING).addButton(TWToolkit.lang.updateDownload, function() {
               updatedialog.hide();
-              location.href = TWToolkit.website + '/code.user.js';
+              location.href = TWToolkit.website + '/twtoolkit.user.js';
             }).addButton('cancel').show();
           }
 
@@ -233,7 +236,7 @@
         }
         pref_content.append(new west.gui.Button(TWToolkit.lang.pref_apply).click(function() {
           location.reload();
-        }).getMainDiv()).append('<a href="https://www.buymeacoffee.com/thathanka" target="_blank"><img src="https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/purple_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>').append('<br/><br/>');
+        }).getMainDiv()).append('<br/><br/>');
         for (i = 0; i < checkboxes.length; i++) {
           pref_content.append(new west.gui.Checkbox(TWToolkit.lang.prefs[checkboxes[i]], checkboxes[i]).setId(checkboxes[i]).setSelected(TWToolkit.preferences[checkboxes[i]]).setCallback(function(val) {
             TWToolkit.preferences[this.groupClass] = val;
@@ -292,7 +295,7 @@
       }
     },
     itemUse: {
-      itemList: [1975000, 1976000, 2675000, 2676000, 2561000, 2562000, 13711000, 2690000, 379000, 50382000, 50839000, 50855000, 51156000, 51324000, 2136000, 2393000, 2137000, 2394000, 2138000, 2395000, 2139000,2559000,51468000,2560000],
+      itemList: [1975000, 1976000, 2675000, 2676000, 2561000, 2562000, 13711000, 2690000, 379000, 50382000, 50839000, 50855000, 51156000, 51324000, 2136000, 2393000, 2137000, 2394000, 2138000, 2395000, 2139000,2559000,51468000,2560000,51810000],
       changeOpenCount: function(item, action) {
         var count = parseInt($('#open_popup_input').val());
         switch (action) {
