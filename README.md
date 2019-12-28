@@ -1,8 +1,10 @@
-# TWToolkit
+# TW-Toolkit
+
+![logo](https://the-west-scripts.github.io/TW-Toolkit/logo.png)
 
 ## Install URL
 
-[Click here to install]()
+[Click here to install](https://the-west-scripts.github.io/TW-Toolkit/twtoolkit.user.js)
 
 ## Features
 
