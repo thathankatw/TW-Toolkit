@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         The West - Toolkit
-// @version      1.47
+// @version      1.48
 // @description  Useful tools for The West
 // @author       Thathanka Iyothanka
 // @include		   http*://*.the-west.*/game.php*
@@ -37,7 +37,7 @@
 })(function() {
   TWToolkit = {
     scriptName: "The West Toolkit",
-    version: 1.47,
+    version: 1.48,
     gameMAX: Game.version.toString(),
     author: "Thathanka Iyothanka",
     gameMIN: "2.0",
