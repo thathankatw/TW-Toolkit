@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         The West - Toolkit
-// @version      1.48
+// @version      1.49
 // @description  Useful tools for The West
 // @author       Thathanka Iyothanka
 // @include		   http*://*.the-west.*/game.php*
@@ -37,7 +37,7 @@
 })(function() {
   TWToolkit = {
     scriptName: "The West Toolkit",
-    version: 1.48,
+    version: 1.49,
     gameMAX: Game.version.toString(),
     author: "Thathanka Iyothanka",
     gameMIN: "2.0",
@@ -296,7 +296,7 @@
       }
     },
     itemUse: {
-      itemList: [1975000, 1976000, 2675000, 2676000, 2561000, 2562000, 13711000, 2690000, 379000, 50382000, 50839000, 50855000, 51156000, 51324000, 2136000, 2393000, 2137000, 2394000, 2138000, 2395000, 2139000,2559000,51468000,2560000,51810000],
+      itemList: [1975000, 1976000, 2675000, 2676000, 2561000, 2562000, 13711000, 2690000, 379000, 50382000, 50839000, 50855000, 51156000, 51324000, 2136000, 2393000, 2137000, 2394000, 2138000, 2395000, 2139000,2559000,51468000,2560000,51810000,51921000,2196000,2197000,2198000,2199000,2200000],
       changeOpenCount: function(item, action) {
         var count = parseInt($('#open_popup_input').val());
         switch (action) {
@@ -354,6 +354,7 @@
         var m = result.msg.effects[0];
         switch (m.type) {
           case 'lottery':
+          case 'content':
             div = $('<div></div>');
             for (var x = 0; x < result.msg.changes.length; x++) {
               var count = Bag.getItemByItemId(result.msg.changes[x].item_id) ? result.msg.changes[x].count - Bag.getItemByItemId(result.msg.changes[x].item_id).count : result.msg.changes[x].count;
@@ -370,6 +371,9 @@
             break;
           case 'dollar':
             div = new tw2widget.reward.DollarReward(m.dollar * number).getMainDiv();
+            break;
+          case 'experience':
+            div = new tw2widget.reward.ExpReward('').getMainDiv();
             break;
           default:
             console.error(result);
