@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         The West - Toolkit
-// @version      1.50
+// @version      1.51
 // @description  Useful tools for The West
 // @author       Thathanka Iyothanka
 // @include		   http*://*.the-west.*/game.php*
@@ -37,7 +37,7 @@
 })(function() {
   TWToolkit = {
     scriptName: "The West Toolkit",
-    version: 1.50,
+    version: 1.51,
     gameMAX: Game.version.toString(),
     author: "Thathanka Iyothanka",
     gameMIN: "2.0",
@@ -847,7 +847,7 @@
           if (delay<30000000000){
             setTimeout(function(){
               TWToolkit.reminders.add('ifbc_live', 'IFBC', TWToolkit.icons.ifbc_live, function() {
-                showlink('https://www.twitch.tv/thathanka');
+                showlink('https://www.twitch.tv/directory/game/The%20West');
               });
             },delay);
           }
