@@ -19,6 +19,6 @@
 
 ## Available languages
 
-![available languages](https://west-tools.alwaysdata.net/utilities/languages_graph.php)
+![available languages](https://www.west-tools.info/utilities/languages_graph.php)
 
 [Public translation project](https://poeditor.com/join/project/NvIk7owPEM)
