@@ -1,10 +1,8 @@
-# TW-Toolkit
-
-![logo](https://the-west-scripts.github.io/TW-Toolkit/logo.png)
+![logo](https://thathankatw.github.io/TW-Toolkit/logo.png)
 
 ## Install URL
 
-[Click here to install](https://the-west-scripts.github.io/TW-Toolkit/twtoolkit.user.js)
+[Click here to install](https://thathankatw.github.io/TW-Toolkit/twtoolkit.user.js)
 
 ## Features
 
@@ -18,7 +16,5 @@
 * Send mass telegrams
 
 ## Available languages
-
-![available languages](https://www.west-tools.info/utilities/languages_graph.php)
 
 [Public translation project](https://poeditor.com/join/project/NvIk7owPEM)

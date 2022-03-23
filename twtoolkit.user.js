@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         The West - Toolkit
-// @version      1.54
+// @version      1.56
 // @description  Useful tools for The West
 // @author       Thathanka Iyothanka
 // @include		   http*://*.the-west.*/game.php*
@@ -8,11 +8,10 @@
 // @license      GPLv3 - http://www.gnu.org/licenses/gpl-3.0.txt
 // @copyright    Copyright (C) 2015, by Thathanka Iyothanka <thathanka.tw@gmail.com>
 // @grant        none
-// @homepage     https://the-west-scripts.github.io/TW-Toolkit/
-// @downloadURL  https://the-west-scripts.github.io/TW-Toolkit/twtoolkit.user.js
-// @updateURL    https://the-west-scripts.github.io/TW-Toolkit/twtoolkit.user.js
-// @supportURL   https://github.com/The-West-Scripts/TW-Toolkit/issues
-// @namespace    https://greasyfork.org/users/13941
+// @homepage     https://thathankatw.github.io/TW-Toolkit/
+// @downloadURL  https://thathankatw.github.io/TW-Toolkit/twtoolkit.user.js
+// @updateURL    https://thathankatw.github.io/TW-Toolkit/twtoolkit.user.js
+// @supportURL   https://github.com/thathankatw/TW-Toolkit/issues
 // ==/UserScript==
 /*
  * This program is free software: you can redistribute it and/or modify
@@ -37,18 +36,18 @@
 })(function () {
   TWToolkit = {
     scriptName: "The West Toolkit",
-    version: 1.54,
+    version: 1.56,
     gameMAX: Game.version.toString(),
     author: "Thathanka Iyothanka",
     gameMIN: "2.0",
-    website: "https://the-west-scripts.github.io/TW-Toolkit",
+    website: "https://thathankatw.github.io/TW-Toolkit",
     updateURL:
-      "https://the-west-scripts.github.io/TW-Toolkit/files/last_version.txt",
-    setsURL: "https://the-west-scripts.github.io/TW-Toolkit/files/sets.json",
+      "https://thathankatw.github.io/TW-Toolkit/files/last_version.txt",
+    setsURL: "https://thathankatw.github.io/TW-Toolkit/files/sets.json",
     chartURL:
       "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js",
     langs: {
-      base_url: "https://the-west-scripts.github.io/TW-Toolkit/langs/",
+      base_url: "https://thathankatw.github.io/TW-Toolkit/langs/",
       fr_FR: "fr_FR.json",
       en_US: "en_US.json",
       de_DE: "de_DE.json", //Thanks to Tom Robert

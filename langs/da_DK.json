@@ -35,7 +35,7 @@
     "buy_info": "Starting buying items...",
     "buy_success": "All the items were bought",
     "wait": "Please wait...",
-    "api_gui": "<img src='https://i.imgur.com/Tsbdut5.png'></br></br><strong>Some tools for The West </strong></br><a target='_blank' href='https://the-west-scripts.github.io/TW-Toolkit/'>Find out more</a></i></br></br>If you have any problem or suggestion, you can contact me at <a target='_blank' href='mailto:thathanka.tw@gmail.com'>thathanka.tw@gmail.com</a>, or on Greasyfork.",
+    "api_gui": "<img src='https://i.imgur.com/Tsbdut5.png'></br></br><strong>Some tools for The West </strong></br><a target='_blank' href='https://thathankatw.github.io/TW-Toolkit/'>Find out more</a></i></br></br>If you have any problem or suggestion, you can contact me at <a target='_blank' href='mailto:thathanka.tw@gmail.com'>thathanka.tw@gmail.com</a>, or on Greasyfork.",
     "calendar": "Open your advent calendar !",
     "script_lang": "Userscript language :",
     "grouped_telegram": "Personalized list",

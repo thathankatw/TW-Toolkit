@@ -35,7 +35,7 @@
     "buy_info": "Achats en cours...",
     "buy_success": "Achats terminés !",
     "wait": "Veuillez patienter...",
-    "api_gui": "<img src='https://i.imgur.com/Tsbdut5.png'></br></br><strong>Divers outils pour The West </strong></br><a target='_blank' href='https://the-west-scripts.github.io/TW-Toolkit/'>En savoir plus ?</a></i></br></br>Si vous rencontrez des problèmes ou avez des suggestions, vous pouvez me contacter via l'adresse <a target='_blank' href='mailto:thathanka.tw@gmail.com'>thathanka.tw@gmail.com</a>, sur Greasyfork ou <a target='_blank' href='https://forum.the-west.fr/private.php?do=newpm&u=15034'> sur ce forum.</a>",
+    "api_gui": "<img src='https://i.imgur.com/Tsbdut5.png'></br></br><strong>Divers outils pour The West </strong></br><a target='_blank' href='https://thathankatw.github.io/TW-Toolkit/'>En savoir plus ?</a></i></br></br>Si vous rencontrez des problèmes ou avez des suggestions, vous pouvez me contacter via l'adresse <a target='_blank' href='mailto:thathanka.tw@gmail.com'>thathanka.tw@gmail.com</a>.",
     "calendar": "Ouvre une case de ton calendrier de l'avent !",
     "script_lang": "Langue du script : ",
     "grouped_telegram": "Liste de diffusion personalisée",
