@@ -328,14 +328,12 @@
             .addClass("west-toolkit-preferences")
             .getMainDiv()
         ).css("margin-top", "6px");
-
-
         TWBattleToolkit.ui.window = wman
           .open("west-toolkit", null, "west-toolkit")
           .setTitle("The West Toolkit")
           .setMiniTitle("TWBattleToolkit")
           .addTab(TWBattleToolkit.lang.pref, "preferences", TWBattleToolkit.ui.tabclick)
-          .appendToContentPane(grouptelegrams_tab, pref_tab);
+          .appendToContentPane(pref_tab);
         TWBattleToolkit.ui.showTab(TWBattleToolkit.ui.window, "grouptelegrams");
       },
     },
