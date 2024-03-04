@@ -146,7 +146,7 @@
             }
 
             TWBattleToolkit.api = TheWestApi.register(
-              "TW-Toolkit",
+              "TW-Battle-Toolkit",
               TWBattleToolkit.scriptName,
               TWBattleToolkit.gameMIN,
               TWBattleToolkit.gameMAX,
