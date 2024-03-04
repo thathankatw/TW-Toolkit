@@ -7,13 +7,12 @@
 ## Features
 
 * Live statistics during fort battles
-* Use and buy items en masse
-* More info in the fort battle map's popups (health and proximity)
-* Appoint playerss from the map
-* Critical hits column
 * Fort ownership details in town profiles
-* Additionnal item info (id and event)
-* Send mass telegrams
+* Critical hits column in cemetery
+* In pre-battle map:
+  - More info about player health and proximity
+  - Shortcut to appoint players
+* Additionnal item info (item id and event)
 
 ## Available languages
 
