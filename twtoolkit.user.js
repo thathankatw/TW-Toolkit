@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         The West - Toolkit
-// @version      1.57
+// @version      1.58
 // @description  Useful tools for The West
 // @author       Thathanka Iyothanka
 // @include		   http*://*.the-west.*/game.php*
@@ -36,7 +36,7 @@
 })(function () {
   TWBattleToolkit = {
     scriptName: "The West Battle Toolkit",
-    version: 1.57,
+    version: 1.58,
     gameMAX: Game.version.toString(),
     author: "Thathanka Iyothanka",
     gameMIN: "2.0",
@@ -334,7 +334,7 @@
           .setMiniTitle("TWBattleToolkit")
           .addTab(TWBattleToolkit.lang.pref, "preferences", TWBattleToolkit.ui.tabclick)
           .appendToContentPane(pref_tab);
-        TWBattleToolkit.ui.showTab(TWBattleToolkit.ui.window, "grouptelegrams");
+        TWBattleToolkit.ui.showTab(TWBattleToolkit.ui.window, "preferences");
       },
     },
     fbPopup: {
