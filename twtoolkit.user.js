@@ -966,15 +966,15 @@
       },
       addButton: function (fortId, windowDiv) {
         $(windowDiv)
-          .find(".tw2gui_window_content_pane")
+          .find(".fort_battle_buttons")
           .append(
-            '<div class="fort_battle_button_analyzer" onclick="TWBattleToolkit.fbanalyzerHtml5.open(' +
+            '<div class="fort_battle_button layer_toggle fort_battle_button_analyzer" onclick="TWBattleToolkit.fbanalyzerHtml5.open(' +
             fortId +
             ')" title="' +
             TWBattleToolkit.lang.openanalyzer +
-            '" style="cursor: pointer; position: absolute; background-image: url(' +
+            '" style="cursor: pointer; background-image: url(' +
             TWBattleToolkit.icons.analyzer_button +
-            '); width: 25px; height: 25px;top: 10px;left: 475px;"></div>'
+            '); width: 25px; height: 25px;"></div>'
           );
       },
       dameraulevenshtein_dist: function (s1, s2) {
@@ -1437,6 +1437,9 @@
         }
       },
       init: function () {
+        document.styleSheets[0].insertRule(
+          ".fortbattle .fort_battle_buttons  {left: 100px !important;}"
+        );
         document.styleSheets[0].insertRule(
           ".west-toolkit-analyzer .hp, .dmg, .losthp {width: 25%;}"
         );
